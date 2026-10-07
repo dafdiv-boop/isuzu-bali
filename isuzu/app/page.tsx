@@ -512,7 +512,12 @@ export default function Home() {
     kebutuhan: "",
   });
 
-  const currentYear = new Date().getFullYear();
+  // Diperbaiki agar aman dari error prerender Next.js
+  const [currentYear, setCurrentYear] = useState<number>(2026);
+  useEffect(() => {
+    setCurrentYear(new Date().getFullYear());
+  }, []);
+
   const currentPromo = promoItems[selectedPromo];
 
   const benefitsList = [
