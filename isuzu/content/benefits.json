@@ -1,0 +1,38 @@
+[
+  {
+    "id": "benefit-1",
+    "title": "Harga Spesial & Diskon Menarik",
+    "description": "Dapatkan penawaran harga terbaik dan diskon menarik dalam setiap pembelian unit Isuzu. Promo disesuaikan dengan budget pelanggan.",
+    "icon": "Tag"
+  },
+  {
+    "id": "benefit-2",
+    "title": "Proses Kredit Mudah dan Cepat",
+    "description": "Kredit dengan persyaratan mudah, pilihan tenor sesuai kemampuan finansial, serta dukungan leasing/bank pembiayaan terpercaya.",
+    "icon": "CreditCard"
+  },
+  {
+    "id": "benefit-3",
+    "title": "Hadiah Aksesoris dan Hadiah Langsung",
+    "description": "Aksesoris seperti karpet, talang air, kaca film dan lainnya, serta hadiah langsung menarik saat pembelian.",
+    "icon": "Gift"
+  },
+  {
+    "id": "benefit-4",
+    "title": "Layanan After Sales Terjamin",
+    "description": "Layanan purnajual seperti servis berkala, klaim asuransi, dan perawatan kendaraan lainnya.",
+    "icon": "Wrench"
+  },
+  {
+    "id": "benefit-5",
+    "title": "Prioritas Pengiriman Unit",
+    "description": "Pelanggan mendapatkan prioritas pengiriman unit sehingga pesanan dapat dikirim lebih cepat dibanding pembelian biasa.",
+    "icon": "Truck"
+  },
+  {
+    "id": "benefit-6",
+    "title": "Konsultasi dan Test Drive Gratis",
+    "description": "Konsultasi gratis mengenai tipe/model yang sesuai kebutuhan serta kesempatan mencoba unit pilihan melalui test drive.",
+    "icon": "MessageSquareCheck"
+  }
+]

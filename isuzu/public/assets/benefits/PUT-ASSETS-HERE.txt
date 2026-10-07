@@ -1,0 +1,2 @@
+Masukkan aset asli website lama di folder ini.
+Jangan ubah nama folder karena akan menjadi struktur asset Next.js.
