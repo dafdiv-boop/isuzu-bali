@@ -208,19 +208,19 @@ const promoItems = [
     id: "membership",
     title: "Isuzu Membership Program",
     description: "Program membership dan benefit pelanggan Isuzu. Hubungi saya untuk detail program yang sedang berlaku.",
-    base: "/assets/promosi/membership",
+    base: "/assets/promosi/membership.jpeg", // Langsung tambahkan ekstensi .jpeg
   },
   {
     id: "pemasangan",
     title: "Program Pemasangan",
     description: "Informasi program pemasangan dan penawaran Isuzu yang tersedia untuk pelanggan.",
-    base: "/assets/promosi/program-pemasangan",
+    base: "/assets/promosi/program-pemasangan.jpeg", // Langsung tambahkan ekstensi .jpeg
   },
   {
     id: "smartember",
     title: "Smartember",
     description: "Program Smartember dengan berbagai penawaran menarik. Konsultasikan detailnya dengan saya.",
-    base: "/assets/promosi/smartember",
+    base: "/assets/promosi/smartember.jpeg", // Langsung tambahkan ekstensi .jpeg
   },
 ];
 
@@ -912,15 +912,12 @@ export default function Home() {
               <article key={promo.id} className={`group rounded-3xl overflow-hidden border shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ${darkMode ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200"}`}>
                 <div className="relative aspect-[4/5] bg-slate-100 overflow-hidden">
                   <img
-                    src={`${promo.base}.jpg`}
-                    alt={promo.title}
-                    className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
-                    onError={(e) => {
-                      const img = e.currentTarget;
-                      if (!img.src.endsWith(".jpeg")) {
-                        img.src = `${promo.base}.jpeg`;
-                      }
-                    }}
+  src={promo.base}
+  alt={promo.title}
+  className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+  onError={(e) => {
+    e.currentTarget.src = "/assets/home/foto-home.png";
+  }}
                   />
                   <div className="absolute top-4 left-4 bg-red-600 text-white rounded-full px-3 py-1.5 text-[10px] font-black shadow-lg">PROMO</div>
                 </div>
