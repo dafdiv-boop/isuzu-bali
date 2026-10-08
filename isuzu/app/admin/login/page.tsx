@@ -520,57 +520,6 @@ export default function Home() {
     const currentYear = 2026;
   }, []);
 
-  /* =========================================================
-     SCROLL REVEAL ANIMATION
-     Elemen akan muncul halus ketika masuk viewport.
-     Tidak membutuhkan library tambahan.
-     ========================================================= */
-  useEffect(() => {
-    const elements = Array.from(
-      document.querySelectorAll<HTMLElement>("[data-reveal]")
-    );
-
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    if (reduceMotion) {
-      elements.forEach((element) => {
-        element.classList.add("reveal-visible");
-      });
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-
-          const element = entry.target as HTMLElement;
-          element.classList.add("reveal-visible");
-
-          // Animasi cukup sekali agar halaman tetap ringan.
-          observer.unobserve(element);
-        });
-      },
-      {
-        threshold: 0.12,
-        rootMargin: "0px 0px -45px 0px",
-      }
-    );
-
-    elements.forEach((element) => {
-      const delay = Number(element.dataset.revealDelay || 0);
-      element.style.setProperty("--reveal-delay", `${delay}ms`);
-
-      if (!element.classList.contains("reveal-visible")) {
-        observer.observe(element);
-      }
-    });
-
-    return () => observer.disconnect();
-  }, [activeCategory, showAllProducts, galleryIndex, lang]);
-
   const currentPromo = promoItems[selectedPromo];
 
   const benefitsList = [
@@ -666,75 +615,6 @@ export default function Home() {
 
   return (
     <div className={`min-h-screen font-sans selection:bg-red-600 selection:text-white transition-colors duration-300 ${darkMode ? "bg-slate-950 text-slate-100" : "bg-[#f8fafc] text-slate-800"}`}>
-
-      {/* =====================================================
-          SCROLL REVEAL STYLE
-          ===================================================== */}
-      <style>{`
-        [data-reveal] {
-          opacity: 0;
-          filter: blur(2px);
-          transition:
-            opacity 780ms cubic-bezier(0.22, 1, 0.36, 1),
-            transform 780ms cubic-bezier(0.22, 1, 0.36, 1),
-            filter 780ms cubic-bezier(0.22, 1, 0.36, 1);
-          transition-delay: var(--reveal-delay, 0ms);
-          will-change: opacity, transform, filter;
-        }
-
-        [data-reveal="up"] {
-          transform: translate3d(0, 34px, 0);
-        }
-
-        [data-reveal="down"] {
-          transform: translate3d(0, -28px, 0);
-        }
-
-        [data-reveal="left"] {
-          transform: translate3d(-42px, 0, 0);
-        }
-
-        [data-reveal="right"] {
-          transform: translate3d(42px, 0, 0);
-        }
-
-        [data-reveal="zoom"] {
-          transform: scale(0.965);
-        }
-
-        [data-reveal].reveal-visible {
-          opacity: 1;
-          filter: blur(0);
-          transform: translate3d(0, 0, 0) scale(1);
-        }
-
-        /* Kilau halus sekali saat elemen penting muncul */
-        [data-reveal-glow="true"].reveal-visible {
-          animation: revealSoftGlow 1400ms ease-out 1;
-        }
-
-        @keyframes revealSoftGlow {
-          0% {
-            text-shadow: 0 0 0 rgba(220, 38, 38, 0);
-          }
-          38% {
-            text-shadow: 0 0 20px rgba(220, 38, 38, 0.22);
-          }
-          100% {
-            text-shadow: 0 0 0 rgba(220, 38, 38, 0);
-          }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          [data-reveal] {
-            opacity: 1 !important;
-            filter: none !important;
-            transform: none !important;
-            transition: none !important;
-            animation: none !important;
-          }
-        }
-      `}</style>
 
       {/* =====================================================
           ORNAMENT
@@ -862,9 +742,9 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-t from-[#06131f]/85 via-transparent to-transparent" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-5 lg:px-8 min-h-[590px] flex items-center">
-          <div data-reveal="left" data-reveal-glow="true" className="max-w-[670px] pt-10">
+          <div className="max-w-[670px] pt-10">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-3 py-1.5 mb-5">
-              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-red-500" />
               <span className="text-[10px] font-black tracking-[0.18em] uppercase">{dict.brandSubtitle}</span>
             </div>
 
@@ -905,7 +785,7 @@ export default function Home() {
       <section id="keunggulan" className={`py-20 lg:py-24 px-4 sm:px-6 lg:px-8 relative z-10 transition-colors ${darkMode ? "bg-slate-900/40" : "bg-gray-50"}`}>
         <div className="max-w-[1400px] mx-auto">
           
-          <div data-reveal="up" className="text-center max-w-2xl mx-auto mb-16">
+          <div className="text-center max-w-2xl mx-auto mb-16">
             <span className="text-red-600 font-bold text-xs uppercase tracking-widest">{dict.whyTag}</span>
             <h2 className={`text-3xl md:text-4xl font-black mt-2 ${darkMode ? "text-white" : "text-gray-900"}`}>
               {dict.whyTitle}
@@ -918,10 +798,8 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-5">
             {benefitsList.map((item, index) => (
-              <div
-                key={index}
-                data-reveal={index % 2 === 0 ? "left" : "right"}
-                data-reveal-delay={index * 70}
+              <div 
+                key={index} 
                 className={`rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border-t-4 border-transparent hover:border-red-600 flex flex-col justify-between group ${darkMode ? "bg-slate-900 border-slate-800" : "bg-white border-slate-100"}`}
               >
                 <div>
@@ -950,7 +828,7 @@ export default function Home() {
           ===================================================== */}
       <section id="produk" className={`py-20 lg:py-24 px-5 lg:px-8 relative z-10 transition-colors ${darkMode ? "bg-slate-950" : "bg-white"}`}>
         <div className="max-w-7xl mx-auto">
-          <div data-reveal="up" className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10">
             <div>
               <span className="text-red-600 font-black text-xs uppercase tracking-[0.18em]">{dict.productTag}</span>
               <h2 className={`text-3xl md:text-4xl font-black mt-1 ${darkMode ? "text-white" : "text-[#12345b]"}`}>{dict.productTitle}</h2>
@@ -982,11 +860,9 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
-            {displayedProducts.map((product, index) => (
-              <article
-                key={product.id}
-                data-reveal="up"
-                data-reveal-delay={(index % 5) * 80}
+            {displayedProducts.map((product) => (
+              <article 
+                key={product.id} 
                 onClick={() => setSelectedProduct(product)}
                 className={`group cursor-pointer relative rounded-2xl border overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 ${darkMode ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200/80"}`}
               >
@@ -1023,7 +899,7 @@ export default function Home() {
           </div>
 
           {activeCategory === "Semua" && (
-            <div data-reveal="zoom" className="text-center mt-8">
+            <div className="text-center mt-8">
               <button
                 onClick={() => setShowAllProducts(!showAllProducts)}
                 className={`px-6 py-3 rounded-xl border text-xs font-black transition ${
@@ -1046,7 +922,7 @@ export default function Home() {
           ===================================================== */}
       <section id="promo" className={`py-20 lg:py-24 px-5 lg:px-8 relative z-10 transition-colors ${darkMode ? "bg-slate-900/50" : "bg-[#f4f7fa]"}`}>
         <div className="max-w-7xl mx-auto">
-          <div data-reveal="up" className="text-center mb-10">
+          <div className="text-center mb-10">
             <span className="text-red-600 font-black text-xs uppercase tracking-[0.2em]">{dict.promoTag}</span>
             <h2 className={`text-3xl md:text-4xl font-black mt-2 ${darkMode ? "text-white" : "text-[#12345b]"}`}>{dict.promoTitle}</h2>
             <p className={`text-sm mt-2 max-w-2xl mx-auto ${darkMode ? "text-slate-400" : "text-slate-500"}`}>{dict.promoDesc}</p>
@@ -1054,12 +930,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-3 gap-5">
             {promoItems.map((promo, index) => (
-              <article
-                key={promo.id}
-                data-reveal="up"
-                data-reveal-delay={index * 110}
-                className={`group rounded-3xl overflow-hidden border shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ${darkMode ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200"}`}
-              >
+              <article key={promo.id} className={`group rounded-3xl overflow-hidden border shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ${darkMode ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200"}`}>
                 <div className="relative aspect-[4/5] bg-slate-100 overflow-hidden">
                   <img
   src={promo.base}
@@ -1099,7 +970,7 @@ export default function Home() {
       <section id="galeri" className={`relative overflow-hidden py-20 lg:py-24 px-5 lg:px-8 z-10 transition-colors ${darkMode ? "bg-slate-950" : "bg-[#f7fafc]"}`} onMouseEnter={() => setGalleryPaused(true)} onMouseLeave={() => setGalleryPaused(false)}>
         <div className="relative z-10 max-w-7xl mx-auto">
           <div className="flex flex-col xl:flex-row xl:items-end xl:justify-between gap-5 mb-9">
-            <div data-reveal="left" className="max-w-3xl">
+            <div className="max-w-3xl">
               <span className="text-red-600 font-black text-xs uppercase tracking-[0.2em]">{dict.galleryTag}</span>
               <h2 className={`text-3xl md:text-5xl font-black tracking-tight mt-2 ${darkMode ? "text-white" : "text-[#12345b]"}`}>
                 {dict.galleryTitle1} <span className="text-red-600">{dict.galleryTitle2}</span>
@@ -1107,7 +978,7 @@ export default function Home() {
               <p className={`text-sm md:text-base mt-3 leading-7 max-w-2xl ${darkMode ? "text-slate-400" : "text-slate-500"}`}>{dict.galleryDesc}</p>
             </div>
 
-            <div data-reveal="right" className="flex items-center gap-3">
+            <div className="flex items-center gap-3">
               <div className="hidden md:block text-right mr-2">
                 <p className="text-red-600 font-black text-lg italic">{dict.stepWithIsuzu}</p>
                 <p className={`font-black text-xs tracking-wider ${darkMode ? "text-slate-300" : "text-[#12345b]"}`}>{dict.stepFarther}</p>
@@ -1125,12 +996,7 @@ export default function Home() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
               {visibleGallery.map((item, i) => (
-                <article
-                  key={`${item.file}-${i}`}
-                  data-reveal="up"
-                  data-reveal-delay={i * 75}
-                  className={`group rounded-2xl overflow-hidden border shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ${darkMode ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200"}`}
-                >
+                <article key={`${item.file}-${i}`} className={`group rounded-2xl overflow-hidden border shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ${darkMode ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200"}`}>
                   <div className={`relative h-52 overflow-hidden ${darkMode ? "bg-slate-800" : "bg-slate-100"}`}>
                     <img
                       src={`/assets/gallery/${item.file}.jpeg`}
@@ -1192,7 +1058,7 @@ export default function Home() {
           ===================================================== */}
       <section id="tentang" className={`py-16 lg:py-20 px-5 lg:px-8 relative z-10 overflow-hidden transition-colors ${darkMode ? "bg-slate-900" : "bg-white"}`}>
         <div className="max-w-7xl mx-auto relative">
-          <div data-reveal="up" className="max-w-3xl mb-10">
+          <div className="max-w-3xl mb-10">
             <span className="text-red-600 font-black text-xs uppercase tracking-[0.18em]">{dict.aboutTag}</span>
             <h2 className={`text-3xl md:text-5xl font-black mt-2 leading-tight ${darkMode ? "text-white" : "text-[#12345b]"}`}>
               {dict.aboutTitle1} <span className="text-red-600">{dict.aboutTitle2}</span>
@@ -1202,7 +1068,7 @@ export default function Home() {
 
           <div className="grid lg:grid-cols-[0.72fr_1.28fr] gap-8 lg:gap-10 items-start">
             {/* PROFILE CARD */}
-            <div data-reveal="left" className="relative max-w-md mx-auto lg:mx-0 w-full">
+            <div className="relative max-w-md mx-auto lg:mx-0 w-full">
               <div className={`relative rounded-[1.8rem] overflow-hidden border shadow-2xl transition-all duration-300 ${darkMode ? "bg-slate-950 border-slate-800" : "bg-gradient-to-b from-[#071b2d] to-[#04101b] border-slate-800"}`}>
                 
                 <div className="absolute -top-24 -right-24 w-48 h-48 bg-red-600/20 rounded-full blur-3xl pointer-events-none" />
@@ -1271,7 +1137,7 @@ export default function Home() {
 
             {/* SERVICES & FORM */}
             <div>
-              <div data-reveal="right" className="grid sm:grid-cols-3 gap-3 mb-7">
+              <div className="grid sm:grid-cols-3 gap-3 mb-7">
                 {[
                   ["01", dict.service1Title, dict.service1Desc],
                   ["02", dict.service2Title, dict.service2Desc],
@@ -1285,7 +1151,7 @@ export default function Home() {
                 ))}
               </div>
 
-              <div id="kontak" data-reveal="right" data-reveal-delay="120" className={`rounded-[1.7rem] border p-5 sm:p-6 lg:p-7 shadow-sm transition-colors ${darkMode ? "bg-slate-950 border-slate-800" : "bg-[#f8fafc] border-slate-200"}`}>
+              <div id="kontak" className={`rounded-[1.7rem] border p-5 sm:p-6 lg:p-7 shadow-sm transition-colors ${darkMode ? "bg-slate-950 border-slate-800" : "bg-[#f8fafc] border-slate-200"}`}>
                 <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-5">
                   <div>
                     <span className="text-red-600 text-[10px] font-black uppercase tracking-[0.18em]">{dict.formTag}</span>
@@ -1362,7 +1228,7 @@ export default function Home() {
           ===================================================== */}
       <footer className={`py-10 px-5 lg:px-8 relative z-10 overflow-hidden transition-colors ${darkMode ? "bg-slate-950 text-slate-400 border-t border-slate-800" : "bg-[#061521] text-slate-400"}`}>
         <div className="max-w-7xl mx-auto relative z-10">
-          <div data-reveal="up" className="grid md:grid-cols-[1.3fr_1fr_1fr] gap-8 pb-8 border-b border-white/10">
+          <div className="grid md:grid-cols-[1.3fr_1fr_1fr] gap-8 pb-8 border-b border-white/10">
             <div>
               <img src="/assets/logo/logo-isuzu.png" alt="Isuzu Bali" className="h-8 w-auto object-contain brightness-0 invert" />
               <p className="text-xs text-slate-500 mt-3">REAL PARTNER, REAL JOURNEY.</p>
