@@ -634,7 +634,7 @@ export default function Home() {
       <nav className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b transition-colors duration-300 ${darkMode ? "bg-slate-900/90 border-slate-800" : "bg-white/92 border-slate-200/80 shadow-sm"}`}>
         <div className="max-w-7xl mx-auto h-[70px] px-5 lg:px-8 flex items-center justify-between">
           <a href="#beranda" className="flex items-center gap-2 shrink-0">
-            <img src="/assets/logo/logo-isuzu.png" alt="Isuzu" className="h-8 md:h-9 w-auto object-contain" />
+            <img src="/assets/logo/logo-isuzu.png" alt="Isuzu" className="h-10 md:h-12 w-auto object-contain" />
             <span className={`font-black text-red-600 tracking-[0.18em] text-lg border-l pl-2 ${darkMode ? "border-slate-700" : "border-slate-300"}`}>BALI</span>
           </a>
 
