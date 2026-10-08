@@ -1382,7 +1382,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className={`p-5 border-t flex flex-col sm:flex-row gap-3 ${darkMode ? "bg-slate-950/80 border-slate-800" : "bg-slate-50 border-slate-200"}`}>
+                        <div className={`p-5 border-t flex flex-col sm:flex-row gap-3 ${darkMode ? "bg-slate-950/80 border-slate-800" : "bg-slate-50 border-slate-200"}`}>
               <button
                 onClick={() => {
                   openWhatsApp(`Halo Pak ${MARKETING_NAME}, saya ingin menanyakan penawaran harga, simulasi kredit, dan ketersediaan unit ${selectedProduct.name}.`);
@@ -1393,9 +1393,14 @@ export default function Home() {
                 <Phone className="w-4 h-4" />
                 {dict.askUnitWa}
               </button>
+
               <button
                 onClick={() => setSelectedProduct(null)}
-                className={`px-6 py-3.5 rounded-xl text-xs font-black border transition ${darkMode ? "border-slate-700 text-slate-300 hover:bg-slate-800" : "border-slate-300 text-slate-700 hover:bg-slate-100"}`}
+                className={`px-6 py-3.5 rounded-xl text-xs font-black border transition ${
+                  darkMode
+                    ? "border-slate-700 text-slate-300 hover:bg-slate-800"
+                    : "border-slate-300 text-slate-700 hover:bg-slate-100"
+                }`}
               >
                 {dict.close}
               </button>
