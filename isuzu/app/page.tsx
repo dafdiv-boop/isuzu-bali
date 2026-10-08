@@ -467,7 +467,7 @@ function SectionDivider({ darkMode }: { darkMode: boolean }) {
   return (
     <div className={`relative w-full h-12 flex items-center justify-center my-2 select-none overflow-hidden ${darkMode ? "bg-slate-950" : "bg-white"}`}>
       <div className={`absolute inset-x-0 h-[1px] ${darkMode ? "bg-gradient-to-r from-transparent via-red-600/40 to-transparent" : "bg-gradient-to-r from-transparent via-red-500/30 to-transparent"}`} />
-      <div className={`relative z-10 px-4 py-1 rounded-full border text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2 shadow-sm ${
+      <div data-reveal="zoom" data-reveal-repeat="true" className={`relative z-10 px-4 py-1 rounded-full border text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2 shadow-sm ${
         darkMode 
           ? "bg-slate-900 border-slate-800 text-red-400" 
           : "bg-slate-50 border-slate-200 text-red-600"
@@ -521,54 +521,79 @@ export default function Home() {
   }, []);
 
   /* =========================================================
-     SCROLL REVEAL ANIMATION
-     Elemen akan muncul halus ketika masuk viewport.
-     Tidak membutuhkan library tambahan.
+     SCROLL REVEAL ANIMATION — ROBUST VERSION
+     - aktif saat elemen benar-benar masuk viewport
+     - tidak bergantung pada setting "reduced motion" Windows/browser
+     - fallback aman bila IntersectionObserver tidak tersedia
      ========================================================= */
   useEffect(() => {
-    const elements = Array.from(
-      document.querySelectorAll<HTMLElement>("[data-reveal]")
-    );
+    let observer: IntersectionObserver | null = null;
+    let timer: number | null = null;
 
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
+    const startReveal = () => {
+      const elements = Array.from(
+        document.querySelectorAll<HTMLElement>("[data-reveal]")
+      );
 
-    if (reduceMotion) {
-      elements.forEach((element) => {
-        element.classList.add("reveal-visible");
-      });
-      return;
-    }
+      if (!elements.length) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-
-          const element = entry.target as HTMLElement;
+      // Fallback: jangan pernah biarkan elemen hilang total.
+      if (!("IntersectionObserver" in window)) {
+        elements.forEach((element) => {
           element.classList.add("reveal-visible");
-
-          // Animasi cukup sekali agar halaman tetap ringan.
-          observer.unobserve(element);
         });
-      },
-      {
-        threshold: 0.12,
-        rootMargin: "0px 0px -45px 0px",
+        return;
       }
-    );
 
-    elements.forEach((element) => {
-      const delay = Number(element.dataset.revealDelay || 0);
-      element.style.setProperty("--reveal-delay", `${delay}ms`);
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const element = entry.target as HTMLElement;
 
-      if (!element.classList.contains("reveal-visible")) {
-        observer.observe(element);
+            if (entry.isIntersecting) {
+              element.classList.add("reveal-visible");
+
+              // Default: animasi hanya sekali.
+              // Jika ingin berulang, tambahkan data-reveal-repeat="true".
+              if (element.dataset.revealRepeat !== "true") {
+                observer?.unobserve(element);
+              }
+            } else if (element.dataset.revealRepeat === "true") {
+              element.classList.remove("reveal-visible");
+            }
+          });
+        },
+        {
+          threshold: 0.06,
+          rootMargin: "0px 0px -8% 0px",
+        }
+      );
+
+      elements.forEach((element) => {
+        const delay = Number(element.dataset.revealDelay || 0);
+
+        element.style.setProperty(
+          "--reveal-delay",
+          `${Math.max(0, delay)}ms`
+        );
+
+        // Reset hanya untuk elemen yang memang belum pernah tampil.
+        if (!element.classList.contains("reveal-visible")) {
+          observer?.observe(element);
+        }
+      });
+    };
+
+    // Beri browser satu frame untuk menyelesaikan render DOM.
+    timer = window.setTimeout(startReveal, 60);
+
+    return () => {
+      if (timer !== null) {
+        window.clearTimeout(timer);
       }
-    });
 
-    return () => observer.disconnect();
+      observer?.disconnect();
+    };
   }, [activeCategory, showAllProducts, galleryIndex, lang]);
 
   const currentPromo = promoItems[selectedPromo];
@@ -673,33 +698,33 @@ export default function Home() {
       <style>{`
         [data-reveal] {
           opacity: 0;
-          filter: blur(2px);
+          filter: blur(5px);
           transition:
-            opacity 780ms cubic-bezier(0.22, 1, 0.36, 1),
-            transform 780ms cubic-bezier(0.22, 1, 0.36, 1),
-            filter 780ms cubic-bezier(0.22, 1, 0.36, 1);
+            opacity 720ms cubic-bezier(0.22, 1, 0.36, 1),
+            transform 720ms cubic-bezier(0.22, 1, 0.36, 1),
+            filter 720ms cubic-bezier(0.22, 1, 0.36, 1);
           transition-delay: var(--reveal-delay, 0ms);
           will-change: opacity, transform, filter;
         }
 
         [data-reveal="up"] {
-          transform: translate3d(0, 34px, 0);
+          transform: translate3d(0, 48px, 0);
         }
 
         [data-reveal="down"] {
-          transform: translate3d(0, -28px, 0);
+          transform: translate3d(0, -42px, 0);
         }
 
         [data-reveal="left"] {
-          transform: translate3d(-42px, 0, 0);
+          transform: translate3d(-64px, 0, 0);
         }
 
         [data-reveal="right"] {
-          transform: translate3d(42px, 0, 0);
+          transform: translate3d(64px, 0, 0);
         }
 
         [data-reveal="zoom"] {
-          transform: scale(0.965);
+          transform: scale(0.94);
         }
 
         [data-reveal].reveal-visible {
@@ -708,30 +733,20 @@ export default function Home() {
           transform: translate3d(0, 0, 0) scale(1);
         }
 
-        /* Kilau halus sekali saat elemen penting muncul */
+        /* Kilau/pulse halus sekali saat elemen penting muncul */
         [data-reveal-glow="true"].reveal-visible {
-          animation: revealSoftGlow 1400ms ease-out 1;
+          animation: revealSoftGlow 1300ms ease-out 1;
         }
 
         @keyframes revealSoftGlow {
           0% {
-            text-shadow: 0 0 0 rgba(220, 38, 38, 0);
+            filter: brightness(1);
           }
-          38% {
-            text-shadow: 0 0 20px rgba(220, 38, 38, 0.22);
+          35% {
+            filter: brightness(1.16);
           }
           100% {
-            text-shadow: 0 0 0 rgba(220, 38, 38, 0);
-          }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          [data-reveal] {
-            opacity: 1 !important;
-            filter: none !important;
-            transform: none !important;
-            transition: none !important;
-            animation: none !important;
+            filter: brightness(1);
           }
         }
       `}</style>
