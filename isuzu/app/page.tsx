@@ -107,6 +107,7 @@ const t = {
     navWhy: "Kenapa Isuzu",
     navProduct: "Produk",
     navPromo: "Promo",
+    navPrice: "Daftar Harga",
     navGallery: "Galeri",
     navAbout: "Tentang Saya",
     navContact: "Kontak",
@@ -182,6 +183,7 @@ const t = {
     navWhy: "Why Isuzu",
     navProduct: "Products",
     navPromo: "Promos",
+    navPrice: "Price List",
     navGallery: "Gallery",
     navAbout: "About Me",
     navContact: "Contact",
@@ -643,6 +645,16 @@ export default function Home() {
             <a href="#keunggulan" className="hover:text-red-600 transition">{dict.navWhy}</a>
             <a href="#produk" className="hover:text-red-600 transition">{dict.navProduct}</a>
             <a href="#promo" className="hover:text-red-600 transition">{dict.navPromo}</a>
+            <a
+              href="/pricelist"
+              className={`font-extrabold transition ${
+                darkMode
+                  ? "text-red-400 hover:text-red-300"
+                  : "text-red-600 hover:text-red-700"
+              }`}
+            >
+              {dict.navPrice}
+            </a>
             <a href="#galeri" className="hover:text-red-600 transition">{dict.navGallery}</a>
             <a href="#tentang" className="hover:text-red-600 transition">{dict.navAbout}</a>
             <a href="#kontak" className="hover:text-red-600 transition">{dict.navContact}</a>
@@ -690,6 +702,7 @@ export default function Home() {
               [dict.navWhy, "#keunggulan"],
               [dict.navProduct, "#produk"],
               [dict.navPromo, "#promo"],
+              [dict.navPrice, "/pricelist"],
               [dict.navGallery, "#galeri"],
               [dict.navAbout, "#tentang"],
               [dict.navContact, "#kontak"],
@@ -698,7 +711,15 @@ export default function Home() {
                 key={label}
                 href={href}
                 onClick={() => setMobileMenu(false)}
-                className={`block py-3 text-sm font-bold transition ${darkMode ? "text-slate-200 hover:text-red-500" : "text-slate-700 hover:text-red-600"}`}
+                className={`block py-3 text-sm font-bold transition ${
+                  label === dict.navPrice
+                    ? darkMode
+                      ? "text-red-400 hover:text-red-300"
+                      : "text-red-600 hover:text-red-700"
+                    : darkMode
+                    ? "text-slate-200 hover:text-red-500"
+                    : "text-slate-700 hover:text-red-600"
+                }`}
               >
                 {label}
               </a>
@@ -1222,6 +1243,7 @@ export default function Home() {
                 <a href="#keunggulan" className="hover:text-white">{dict.navWhy}</a>
                 <a href="#produk" className="hover:text-white">{dict.navProduct}</a>
                 <a href="#promo" className="hover:text-white">{dict.navPromo}</a>
+                <a href="/pricelist" className="text-red-400 hover:text-red-300 font-bold">{dict.navPrice}</a>
                 <a href="#galeri" className="hover:text-white">{dict.navGallery}</a>
                 <a href="#tentang" className="hover:text-white">{dict.navAbout}</a>
                 <a href="#kontak" className="hover:text-white">{dict.navContact}</a>
