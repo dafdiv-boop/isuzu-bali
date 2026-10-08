@@ -37,11 +37,11 @@ import {
 const MARKETING_WA = "6281337680343";
 const MARKETING_PHONE = "081337680343";
 const MARKETING_EMAIL = "arisetyawan449@gmail.com";
-const MARKETING_NAME = "Aris Setyawan";
+const MARKETING_NAME = "Ari Setyawan";
 const OFFICE_NAME = "Astra Isuzu Denpasar";
 const OFFICE_ADDRESS = "Jl. Cokroaminoto No. 52 Denpasar";
 
-const PROFILE_IMAGE = "/assets/profil/aris-setyawan.jpeg";
+const PROFILE_IMAGE = "/assets/profil/ari-setyawan.jpeg";
 
 /* =========================================================
    Kamus Bahasa (ID & EN)
@@ -52,7 +52,7 @@ const t = {
     heroTitle1: "KENDARAAN NIAGA",
     heroTitle2: "UNTUK BISNIS YANG",
     heroTitle3: "TERUS BERGERAK.",
-    heroDesc: "Saya <strong>Aris Setyawan</strong>, siap membantu Anda memilih kendaraan Isuzu yang sesuai kebutuhan usaha, simulasi kredit, hingga proses pembelian dan serah terima unit.",
+    heroDesc: "Saya <strong>Ari Setyawan</strong>, siap membantu Anda memilih kendaraan Isuzu yang sesuai kebutuhan usaha, simulasi kredit, hingga proses pembelian dan serah terima unit.",
     viewProducts: "Lihat Produk",
     viewPromo: "Lihat Promo",
     officialDealer: "Dealer Resmi",
@@ -95,7 +95,7 @@ const t = {
     service3Desc: "Mendampingi proses hingga kendaraan diterima pelanggan.",
     formTag: "MINTA PENAWARAN",
     formTitle: "Ceritakan Kebutuhan Anda",
-    formNote: "Isi singkat saja. Pesan akan langsung diteruskan ke WhatsApp Aris Setyawan.",
+    formNote: "Isi singkat saja. Pesan akan langsung diteruskan ke WhatsApp Ari Setyawan.",
     nameLabel: "Nama",
     namePlaceholder: "Nama Anda",
     whatsappLabel: "WhatsApp",
@@ -128,7 +128,7 @@ const t = {
     heroTitle1: "COMMERCIAL VEHICLES",
     heroTitle2: "FOR A BUSINESS THAT",
     heroTitle3: "KEEPS MOVING.",
-    heroDesc: "I am <strong>Aris Setyawan</strong>, ready to help you choose the right Isuzu vehicle for your business needs, credit simulations, to purchase and unit handover processes.",
+    heroDesc: "I am <strong>Ari Setyawan</strong>, ready to help you choose the right Isuzu vehicle for your business needs, credit simulations, to purchase and unit handover processes.",
     viewProducts: "View Products",
     viewPromo: "View Promos",
     officialDealer: "Official Dealer",
@@ -171,7 +171,7 @@ const t = {
     service3Desc: "Accompanying the process until the vehicle is received by the customer.",
     formTag: "REQUEST A QUOTE",
     formTitle: "Tell Us Your Needs",
-    formNote: "Fill it out briefly. The message will be forwarded directly to Aris Setyawan's WhatsApp.",
+    formNote: "Fill it out briefly. The message will be forwarded directly to Ari Setyawan's WhatsApp.",
     nameLabel: "Name",
     namePlaceholder: "Your Name",
     whatsappLabel: "WhatsApp",
